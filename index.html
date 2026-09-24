@@ -1,0 +1,4193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+/>
+
+<meta
+  name="theme-color"
+  content="#020006"
+/>
+
+<title>Written in Starlight ♡</title>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #020006;
+  color: #fff;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  user-select: none;
+
+  touch-action: none;
+}
+
+/* =========================================================
+   APP
+========================================================= */
+
+#app {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 44%,
+      rgba(255, 35, 145, .10),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 18% 88%,
+      rgba(95, 0, 130, .08),
+      transparent 35%
+    ),
+
+    linear-gradient(
+      180deg,
+      #010005 0%,
+      #05000d 50%,
+      #000001 100%
+    );
+}
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+canvas {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+}
+
+#space {
+  z-index: 1;
+}
+
+#constellation {
+  z-index: 2;
+}
+
+#heart {
+  z-index: 3;
+}
+
+#fx {
+  z-index: 4;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   ATMOSPHERE
+========================================================= */
+
+.ambient {
+  position: absolute;
+
+  left: 50%;
+  top: 43%;
+
+  width:
+    min(95vw, 1050px);
+
+  height:
+    min(60vw, 620px);
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255, 0, 130, .065),
+      rgba(130, 0, 110, .025) 45%,
+      transparent 72%
+    );
+
+  filter:
+    blur(42px);
+
+  z-index: 0;
+
+  pointer-events: none;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+
+  z-index: 20;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 25%,
+      rgba(0,0,0,.10) 48%,
+      rgba(0,0,0,.76) 100%
+    );
+}
+
+/* =========================================================
+   GRAIN
+========================================================= */
+
+.grain {
+  position: absolute;
+
+  inset: -50%;
+
+  z-index: 35;
+
+  pointer-events: none;
+
+  opacity: .018;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+
+  animation:
+    grainMove .3s steps(2) infinite;
+}
+
+/* =========================================================
+   OPENING
+========================================================= */
+
+#opening {
+  position: absolute;
+  inset: 0;
+
+  z-index: 40;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  padding: 28px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 25, 130, .035),
+      transparent 34%
+    );
+
+  transition:
+    opacity 1.2s ease,
+    visibility 1.2s ease;
+}
+
+#opening.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.opening-kicker {
+  font-size: 9px;
+
+  letter-spacing: 8px;
+
+  color:
+    rgba(255,255,255,.42);
+
+  text-transform: uppercase;
+
+  opacity: 0;
+
+  transform:
+    translateY(18px);
+}
+
+#opening.ready
+.opening-kicker {
+  animation:
+    introUp 1.1s .2s forwards;
+}
+
+.opening-title {
+  margin-top: 16px;
+
+  font-size:
+    clamp(37px, 11vw, 94px);
+
+  line-height: .95;
+
+  letter-spacing:
+    clamp(5px, 1.7vw, 13px);
+
+  font-weight: 800;
+
+  color: #fff8fc;
+
+  text-shadow:
+    0 0 12px rgba(255,255,255,.16),
+    0 0 36px rgba(255,80,165,.40),
+    0 0 85px rgba(255,20,120,.20);
+
+  opacity: 0;
+
+  filter:
+    blur(12px);
+
+  transform:
+    translateY(24px)
+    scale(.97);
+}
+
+#opening.ready
+.opening-title {
+  animation:
+    titleReveal 1.7s .4s forwards;
+}
+
+.opening-line {
+  width: 0;
+  height: 1px;
+
+  margin-top: 24px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,135,195,.9),
+      transparent
+    );
+
+  box-shadow:
+    0 0 18px
+    rgba(255,35,130,.75);
+}
+
+#opening.ready
+.opening-line {
+  animation:
+    growLine 1.2s 1s forwards;
+}
+
+.opening-subtitle {
+  width:
+    min(88%, 620px);
+
+  margin-top: 20px;
+
+  font-size:
+    clamp(10px, 2.6vw, 14px);
+
+  line-height: 1.8;
+
+  letter-spacing: 2.6px;
+
+  color:
+    rgba(255,255,255,.46);
+
+  opacity: 0;
+
+  transform:
+    translateY(16px);
+}
+
+#opening.ready
+.opening-subtitle {
+  animation:
+    introUp 1.2s 1.25s forwards;
+}
+
+#enter {
+  margin-top: 30px;
+
+  min-width: 175px;
+
+  padding:
+    11px 18px;
+
+  border:
+    1px solid
+    rgba(255,120,180,.20);
+
+  border-radius: 999px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  color:
+    rgba(255,255,255,.72);
+
+  backdrop-filter:
+    blur(12px);
+
+  font:
+    inherit;
+
+  font-size: 9px;
+
+  letter-spacing: 4px;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  opacity: 0;
+
+  transform:
+    translateY(14px);
+
+  transition:
+    transform .18s ease,
+    background .2s ease,
+    border-color .2s ease;
+}
+
+#opening.ready
+#enter {
+  animation:
+    introUp 1.1s 1.55s forwards;
+}
+
+#enter:active {
+  transform:
+    translateY(0)
+    scale(.94);
+}
+
+/* =========================================================
+   MAIN MESSAGE
+========================================================= */
+
+.message {
+  position: absolute;
+
+  left: 50%;
+
+  top:
+    calc(
+      45.5% +
+      clamp(126px, 22vw, 178px)
+    );
+
+  transform:
+    translate(-50%, 28px);
+
+  width:
+    min(92%, 730px);
+
+  z-index: 18;
+
+  text-align: center;
+
+  opacity: 0;
+
+  filter:
+    blur(7px);
+
+  pointer-events: none;
+
+  transition:
+    opacity 1.4s ease,
+    transform 1.4s ease,
+    filter 1.4s ease;
+}
+
+.message.show {
+  opacity: 1;
+
+  filter:
+    blur(0);
+
+  transform:
+    translate(-50%, 0);
+}
+
+.message-small {
+  font-size: 8px;
+
+  letter-spacing: 5px;
+
+  color:
+    rgba(255,255,255,.28);
+
+  text-transform: uppercase;
+}
+
+.message-title {
+  margin-top: 10px;
+
+  font-size:
+    clamp(25px, 7vw, 54px);
+
+  line-height: 1.1;
+
+  letter-spacing: 2.8px;
+
+  color:
+    #fff9fc;
+
+  text-shadow:
+    0 0 12px rgba(255,100,175,.34),
+    0 0 34px rgba(255,20,120,.20);
+}
+
+.message-body {
+  margin-top: 14px;
+
+  min-height: 58px;
+
+  font-size:
+    clamp(11px, 2.7vw, 15px);
+
+  line-height: 1.9;
+
+  letter-spacing: 1.3px;
+
+  color:
+    rgba(255,255,255,.60);
+}
+
+.cursor {
+  display: inline-block;
+
+  width: 1px;
+  height: 14px;
+
+  margin-left: 3px;
+
+  vertical-align: -2px;
+
+  background:
+    rgba(255,150,205,.85);
+
+  animation:
+    blinkCursor .8s infinite;
+}
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+
+.controls {
+  position: absolute;
+
+  left: 50%;
+  bottom:
+    max(
+      18px,
+      env(safe-area-inset-bottom)
+    );
+
+  transform:
+    translateX(-50%);
+
+  z-index: 45;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+.hint {
+  font-size: 8px;
+
+  letter-spacing: 4px;
+
+  text-transform: uppercase;
+
+  color:
+    rgba(255,255,255,.22);
+
+  transition:
+    opacity .6s ease;
+}
+
+.controls-row {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  appearance: none;
+
+  border:
+    1px solid
+    rgba(255,120,180,.15);
+
+  border-radius: 999px;
+
+  padding:
+    9px 14px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  color:
+    rgba(255,255,255,.55);
+
+  backdrop-filter:
+    blur(10px);
+
+  font:
+    inherit;
+
+  font-size: 8px;
+
+  letter-spacing: 3px;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    transform .18s ease,
+    background .2s ease,
+    border-color .2s ease,
+    opacity .6s ease;
+}
+
+.btn:active {
+  transform:
+    scale(.94);
+}
+
+.btn.active {
+  background:
+    rgba(255,40,130,.08);
+
+  border-color:
+    rgba(255,110,180,.36);
+}
+
+#replay {
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+#replay.visible {
+  opacity: 1;
+
+  pointer-events: auto;
+}
+
+/* =========================================================
+   FLASH
+========================================================= */
+
+#flash {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 16;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(255,155,210,.5),
+      rgba(255,45,145,.11) 22%,
+      transparent 60%
+    );
+}
+
+#flash.fire {
+  animation:
+    bloom .95s ease-out forwards;
+}
+
+/* =========================================================
+   PAUSE LABEL
+========================================================= */
+
+#paused {
+  position: absolute;
+
+  top: 18px;
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  z-index: 50;
+
+  padding:
+    7px 11px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(0,0,0,.15);
+
+  backdrop-filter:
+    blur(8px);
+
+  color:
+    rgba(255,255,255,.35);
+
+  font-size: 8px;
+
+  letter-spacing: 3px;
+
+  text-transform: uppercase;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    opacity .4s ease;
+}
+
+#paused.show {
+  opacity: 1;
+}
+
+/* =========================================================
+   KEYFRAMES
+========================================================= */
+
+@keyframes introUp {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+@keyframes titleReveal {
+
+  from {
+    opacity: 0;
+
+    filter:
+      blur(12px);
+
+    transform:
+      translateY(24px)
+      scale(.97);
+  }
+
+  to {
+    opacity: 1;
+
+    filter:
+      blur(0);
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+@keyframes growLine {
+
+  from {
+    width: 0;
+  }
+
+  to {
+    width:
+      clamp(120px, 38vw, 240px);
+  }
+
+}
+
+@keyframes blinkCursor {
+
+  0%, 45% {
+    opacity: 1;
+  }
+
+  46%, 100% {
+    opacity: 0;
+  }
+
+}
+
+@keyframes bloom {
+
+  0% {
+    opacity: 0;
+  }
+
+  12% {
+    opacity: .88;
+  }
+
+  100% {
+    opacity: 0;
+  }
+
+}
+
+@keyframes grainMove {
+
+  0% {
+    transform:
+      translate(0,0);
+  }
+
+  25% {
+    transform:
+      translate(2%,-1%);
+  }
+
+  50% {
+    transform:
+      translate(-1%,2%);
+  }
+
+  75% {
+    transform:
+      translate(2%,1%);
+  }
+
+  100% {
+    transform:
+      translate(-2%,-1%);
+  }
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 500px) {
+
+  .orbit-outer {
+    width: 255px !important;
+    height: 255px !important;
+  }
+
+  .message {
+    top:
+      calc(45.5% + 112px);
+  }
+
+  .message-title {
+    letter-spacing: 2px;
+  }
+
+  .message-body {
+    padding: 0 5px;
+  }
+
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration:
+      .001ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      .001ms !important;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div id="app">
+
+  <!-- =====================================================
+       ATMOSPHERE
+  ====================================================== -->
+
+  <div class="ambient"></div>
+
+
+  <!-- =====================================================
+       CANVAS
+  ====================================================== -->
+
+  <canvas id="space"></canvas>
+  <canvas id="constellation"></canvas>
+  <canvas id="heart"></canvas>
+  <canvas id="fx"></canvas>
+
+
+  <!-- =====================================================
+       OPENING
+  ====================================================== -->
+
+  <section id="opening">
+
+    <div class="opening-kicker">
+      A little universe
+    </div>
+
+    <div class="opening-title">
+      FOR YOU
+    </div>
+
+    <div class="opening-line"></div>
+
+    <div class="opening-subtitle">
+      Somewhere between the stars<br>
+      and a beautiful feeling.
+    </div>
+
+    <button
+      id="enter"
+      type="button"
+    >
+      Enter the Universe
+    </button>
+
+  </section>
+
+
+  <!-- =====================================================
+       MESSAGE
+  ====================================================== -->
+
+  <section
+    class="message"
+    id="message"
+  >
+
+    <div class="message-small">
+      written in starlight
+    </div>
+
+    <div class="message-title">
+      <span id="messageTitle">
+        You Are Special
+      </span>
+      <span> ♡</span>
+    </div>
+
+    <div class="message-body">
+      <span id="typed"></span>
+      <span class="cursor"></span>
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       FLASH
+  ====================================================== -->
+
+  <div id="flash"></div>
+
+
+  <!-- =====================================================
+       PAUSE
+  ====================================================== -->
+
+  <div id="paused">
+    Paused
+  </div>
+
+
+  <!-- =====================================================
+       CONTROLS
+  ====================================================== -->
+
+  <div class="controls">
+
+    <div
+      class="hint"
+      id="hint"
+    >
+      touch the stars
+    </div>
+
+    <div class="controls-row">
+
+      <button
+        class="btn"
+        id="sound"
+        type="button"
+      >
+        Sound
+      </button>
+
+      <button
+        class="btn"
+        id="replay"
+        type="button"
+      >
+        Replay ✦
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       FX
+  ====================================================== -->
+
+  <div class="vignette"></div>
+  <div class="grain"></div>
+
+</div>
+
+
+<script>
+"use strict";
+
+/* =========================================================
+   CONFIG
+========================================================= */
+
+const CONFIG = {
+
+  title:
+    "You Are Special",
+
+  message:
+    "Some people quietly enter our lives, " +
+    "and somehow make everything feel a little brighter.",
+
+  maxDPR:
+    1.35,
+
+  mobileStars:
+    110,
+
+  desktopStars:
+    210,
+
+  mobileHeartParticles:
+    650,
+
+  desktopHeartParticles:
+    1000,
+
+  burstParticles:
+    85,
+
+  shootingStars:
+    4,
+
+  floatingHeartLimit:
+    24,
+
+  /* timeline in milliseconds */
+
+  constellationStart:
+    1800,
+
+  heartStart:
+    3900,
+
+  heartDuration:
+    2850,
+
+  messageStart:
+    6750,
+
+  typingStart:
+    7450
+
+};
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const $ =
+  id =>
+    document.getElementById(id);
+
+const opening =
+  $("opening");
+
+const enter =
+  $("enter");
+
+const message =
+  $("message");
+
+const messageTitle =
+  $("messageTitle");
+
+const typed =
+  $("typed");
+
+const flash =
+  $("flash");
+
+const replay =
+  $("replay");
+
+const soundButton =
+  $("sound");
+
+const pausedLabel =
+  $("paused");
+
+const hint =
+  $("hint");
+
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+const spaceCanvas =
+  $("space");
+
+const constellationCanvas =
+  $("constellation");
+
+const heartCanvas =
+  $("heart");
+
+const fxCanvas =
+  $("fx");
+
+
+const space =
+  spaceCanvas.getContext(
+    "2d",
+    { alpha: false }
+  );
+
+const constellation =
+  constellationCanvas.getContext(
+    "2d"
+  );
+
+const heart =
+  heartCanvas.getContext(
+    "2d"
+  );
+
+const fx =
+  fxCanvas.getContext(
+    "2d"
+  );
+
+
+/* =========================================================
+   RUNTIME
+========================================================= */
+
+let W = 0;
+let H = 0;
+let DPR = 1;
+
+let runElapsed = 0;
+
+let running = false;
+
+let paused = false;
+
+let frameHandle = 0;
+
+let lastTimestamp = 0;
+
+let completionDone = false;
+
+let messageDone = false;
+
+let typingDone = false;
+
+let typingIndex = 0;
+
+let typingLast = 0;
+
+
+/* =========================================================
+   POINTER
+========================================================= */
+
+const pointer = {
+
+  x: 0.5,
+  y: 0.5,
+
+  px: 0.5,
+  py: 0.5,
+
+  active: false,
+
+  down: false
+
+};
+
+
+/* =========================================================
+   ARRAYS
+========================================================= */
+
+let stars = [];
+
+let constellationNodes = [];
+
+let heartParticles = [];
+
+let bursts = [];
+
+let ripples = [];
+
+let floatingHearts = [];
+
+let shootingStars = [];
+
+
+/* =========================================================
+   AUDIO
+========================================================= */
+
+let audioContext = null;
+
+let masterGain = null;
+
+let soundEnabled = false;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function rand(
+  min,
+  max
+) {
+
+  return (
+    Math.random() *
+    (max - min) +
+    min
+  );
+
+}
+
+
+function clamp(
+  value,
+  min,
+  max
+) {
+
+  return Math.max(
+    min,
+    Math.min(
+      max,
+      value
+    )
+  );
+
+}
+
+
+function lerp(
+  a,
+  b,
+  t
+) {
+
+  return (
+    a +
+    (b - a) * t
+  );
+
+}
+
+
+function easeOutExpo(t) {
+
+  return t >= 1
+    ? 1
+    : 1 -
+      Math.pow(
+        2,
+        -10 * t
+      );
+
+}
+
+
+function easeOutCubic(t) {
+
+  return 1 -
+    Math.pow(
+      1 - t,
+      3
+    );
+
+}
+
+
+function elapsed() {
+
+  return runElapsed;
+
+}
+
+
+/* =========================================================
+   HEART CURVE
+========================================================= */
+
+function heartPoint(t) {
+
+  const x =
+    16 *
+    Math.pow(
+      Math.sin(t),
+      3
+    );
+
+  const y =
+    13 *
+      Math.cos(t)
+    -
+    5 *
+      Math.cos(2 * t)
+    -
+    2 *
+      Math.cos(3 * t)
+    -
+    Math.cos(4 * t);
+
+  return {
+    x,
+    y: -y
+  };
+
+}
+
+
+/* =========================================================
+   RESIZE
+========================================================= */
+
+function resize() {
+
+  W =
+    window.innerWidth;
+
+  H =
+    window.innerHeight;
+
+
+  DPR =
+    Math.min(
+      window.devicePixelRatio || 1,
+      CONFIG.maxDPR
+    );
+
+
+  for (
+    const canvas of [
+      spaceCanvas,
+      constellationCanvas,
+      heartCanvas,
+      fxCanvas
+    ]
+  ) {
+
+    canvas.width =
+      Math.floor(
+        W * DPR
+      );
+
+    canvas.height =
+      Math.floor(
+        H * DPR
+      );
+
+    canvas.style.width =
+      W + "px";
+
+    canvas.style.height =
+      H + "px";
+
+  }
+
+
+  for (
+    const ctx of [
+      space,
+      constellation,
+      heart,
+      fx
+    ]
+  ) {
+
+    ctx.setTransform(
+      DPR,
+      0,
+      0,
+      DPR,
+      0,
+      0
+    );
+
+  }
+
+
+  createStars();
+
+  createConstellation();
+
+  createHeartParticles();
+
+  createShootingStars();
+
+}
+
+
+window.addEventListener(
+  "resize",
+  resize
+);
+
+
+/* =========================================================
+   STARFIELD
+========================================================= */
+
+function createStars() {
+
+  stars = [];
+
+  const mobile =
+    W < 600;
+
+  const count =
+    mobile
+      ? CONFIG.mobileStars
+      : CONFIG.desktopStars;
+
+
+  for (
+    let i = 0;
+    i < count;
+    i++
+  ) {
+
+    stars.push({
+
+      x:
+        Math.random() * W,
+
+      y:
+        Math.random() * H,
+
+      size:
+        rand(
+          .2,
+          1.4
+        ),
+
+      alpha:
+        rand(
+          .10,
+          .88
+        ),
+
+      phase:
+        rand(
+          0,
+          Math.PI * 2
+        ),
+
+      twinkle:
+        rand(
+          .5,
+          2.5
+        ),
+
+      depth:
+        rand(
+          .15,
+          1
+        )
+
+    });
+
+  }
+
+}
+
+
+/* =========================================================
+   SHOOTING STARS
+========================================================= */
+
+function createShootingStars() {
+
+  shootingStars = [];
+
+  for (
+    let i = 0;
+    i <
+    CONFIG.shootingStars;
+    i++
+  ) {
+
+    shootingStars.push({
+
+      x:
+        rand(
+          -W * .15,
+          W
+        ),
+
+      y:
+        rand(
+          0,
+          H * .34
+        ),
+
+      length:
+        rand(
+          55,
+          140
+        ),
+
+      cycle:
+        rand(
+          6500,
+          14000
+        ),
+
+      delay:
+        rand(
+          0,
+          11000
+        )
+
+    });
+
+  }
+
+}
+
+
+/* =========================================================
+   CONSTELLATION
+========================================================= */
+
+function createConstellation() {
+
+  constellationNodes = [];
+
+  const cx =
+    W / 2;
+
+  const cy =
+    H * .455;
+
+
+  const count =
+    20;
+
+
+  for (
+    let i = 0;
+    i < count;
+    i++
+  ) {
+
+    const angle =
+      (
+        i /
+        count
+      ) *
+      Math.PI *
+      2;
+
+
+    const radiusX =
+      rand(
+        Math.min(W,H) * .10,
+        Math.min(W,H) * .24
+      );
+
+
+    const radiusY =
+      rand(
+        Math.min(W,H) * .07,
+        Math.min(W,H) * .20
+      );
+
+
+    constellationNodes.push({
+
+      x:
+        cx +
+        Math.cos(angle) *
+        radiusX,
+
+      y:
+        cy +
+        Math.sin(angle) *
+        radiusY,
+
+      phase:
+        rand(
+          0,
+          Math.PI * 2
+        )
+
+    });
+
+  }
+
+}
+
+
+/* =========================================================
+   HEART PARTICLES
+========================================================= */
+
+function createHeartParticles() {
+
+  heartParticles = [];
+
+
+  const mobile =
+    W < 600;
+
+
+  const count =
+    mobile
+      ? CONFIG.mobileHeartParticles
+      : CONFIG.desktopHeartParticles;
+
+
+  const scale =
+    mobile
+      ? 6.05
+      : 8.65;
+
+
+  const cx =
+    W / 2;
+
+  const cy =
+    H * .455;
+
+
+  for (
+    let i = 0;
+    i < count;
+    i++
+  ) {
+
+    const angle =
+      Math.random() *
+      Math.PI *
+      2;
+
+
+    const edge =
+      heartPoint(
+        angle
+      );
+
+
+    const fill =
+      Math.sqrt(
+        Math.random()
+      );
+
+
+    const tx =
+      cx +
+      edge.x *
+      fill *
+      scale +
+      rand(
+        -.8,
+        .8
+      );
+
+
+    const ty =
+      cy +
+      edge.y *
+      fill *
+      scale +
+      rand(
+        -.8,
+        .8
+      );
+
+
+    const direction =
+      Math.random() *
+      Math.PI *
+      2;
+
+
+    const distance =
+      rand(
+        Math.min(W,H) * .17,
+        Math.max(W,H) * .75
+      );
+
+
+    heartParticles.push({
+
+      x:
+        cx +
+        Math.cos(direction) *
+        distance,
+
+      y:
+        cy +
+        Math.sin(direction) *
+        distance,
+
+      tx,
+      ty,
+
+      vx: 0,
+      vy: 0,
+
+      size:
+        rand(
+          .5,
+          1.5
+        ),
+
+      alpha:
+        rand(
+          .35,
+          1
+        ),
+
+      phase:
+        rand(
+          0,
+          Math.PI * 2
+        )
+
+    });
+
+  }
+
+}
+
+
+/* =========================================================
+   DRAW SPACE
+========================================================= */
+
+function drawSpace(t) {
+
+  space.clearRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  space.fillStyle =
+    "#020007";
+
+
+  space.fillRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  const nebula =
+    space.createRadialGradient(
+      W / 2,
+      H * .455,
+      0,
+      W / 2,
+      H * .455,
+      Math.max(W,H) * .68
+    );
+
+
+  nebula.addColorStop(
+    0,
+    "rgba(255,35,135,.085)"
+  );
+
+  nebula.addColorStop(
+    .28,
+    "rgba(130,0,100,.042)"
+  );
+
+  nebula.addColorStop(
+    .62,
+    "rgba(18,0,30,.022)"
+  );
+
+  nebula.addColorStop(
+    1,
+    "rgba(0,0,0,0)"
+  );
+
+
+  space.fillStyle =
+    nebula;
+
+
+  space.fillRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  const parallaxX =
+    (pointer.x -
+      .5) *
+    10;
+
+
+  const parallaxY =
+    (pointer.y -
+      .5) *
+    7;
+
+
+  for (
+    const s of stars
+  ) {
+
+    const twinkle =
+      Math.sin(
+        t * .001 *
+        s.twinkle +
+        s.phase
+      );
+
+
+    const alpha =
+      clamp(
+        s.alpha +
+        twinkle * .15,
+        .02,
+        1
+      );
+
+
+    const x =
+      s.x +
+      parallaxX *
+      s.depth;
+
+
+    const y =
+      s.y +
+      parallaxY *
+      s.depth;
+
+
+    space.globalAlpha =
+      alpha;
+
+
+    space.fillStyle =
+      "#ffffff";
+
+
+    space.beginPath();
+
+    space.arc(
+      x,
+      y,
+      s.size,
+      0,
+      Math.PI * 2
+    );
+
+    space.fill();
+
+
+    if (
+      s.size >
+      1.12
+    ) {
+
+      space.globalAlpha =
+        alpha * .10;
+
+
+      space.beginPath();
+
+      space.arc(
+        x,
+        y,
+        s.size * 4,
+        0,
+        Math.PI * 2
+      );
+
+      space.fill();
+
+    }
+
+  }
+
+
+  space.globalAlpha =
+    1;
+
+
+  /* shooting stars */
+
+  for (
+    const c of shootingStars
+  ) {
+
+    const local =
+      (
+        t +
+        c.delay
+      ) %
+      c.cycle;
+
+
+    const duration =
+      760;
+
+
+    if (
+      local >
+      duration
+    ) {
+
+      continue;
+
+    }
+
+
+    const p =
+      local /
+      duration;
+
+
+    const x =
+      c.x +
+      p *
+      W *
+      .66;
+
+
+    const y =
+      c.y +
+      p *
+      H *
+      .42;
+
+
+    const alpha =
+      Math.sin(
+        p *
+        Math.PI
+      );
+
+
+    const trail =
+      space.createLinearGradient(
+        x,
+        y,
+        x - c.length,
+        y -
+        c.length * .45
+      );
+
+
+    trail.addColorStop(
+      0,
+      `rgba(255,255,255,${
+        alpha * .82
+      })`
+    );
+
+
+    trail.addColorStop(
+      1,
+      "rgba(255,80,160,0)"
+    );
+
+
+    space.strokeStyle =
+      trail;
+
+    space.lineWidth =
+      1;
+
+
+    space.beginPath();
+
+    space.moveTo(
+      x,
+      y
+    );
+
+    space.lineTo(
+      x - c.length,
+      y -
+      c.length * .45
+    );
+
+    space.stroke();
+
+  }
+
+}
+
+
+/* =========================================================
+   DRAW CONSTELLATION
+========================================================= */
+
+function drawConstellation(t) {
+
+  constellation.clearRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  const progress =
+    easeOutCubic(
+      clamp(
+        (
+          t -
+          CONFIG.constellationStart
+        ) /
+        2700,
+        0,
+        1
+      )
+    );
+
+
+  constellation.save();
+
+  constellation.globalCompositeOperation =
+    "lighter";
+
+
+  /* Connections */
+
+  for (
+    let i = 0;
+    i <
+    constellationNodes.length - 1;
+    i++
+  ) {
+
+    const a =
+      constellationNodes[i];
+
+    const b =
+      constellationNodes[i + 1];
+
+
+    const local =
+      clamp(
+        progress *
+        constellationNodes.length -
+        i,
+        0,
+        1
+      );
+
+
+    if (
+      local <= 0
+    ) {
+
+      continue;
+
+    }
+
+
+    constellation.globalAlpha =
+      local * .36;
+
+
+    constellation.strokeStyle =
+      "#ff72b2";
+
+
+    constellation.lineWidth =
+      .65;
+
+
+    constellation.beginPath();
+
+    constellation.moveTo(
+      a.x,
+      a.y
+    );
+
+    constellation.lineTo(
+      lerp(
+        a.x,
+        b.x,
+        local
+      ),
+      lerp(
+        a.y,
+        b.y,
+        local
+      )
+    );
+
+    constellation.stroke();
+
+  }
+
+
+  /* Closing line */
+
+  if (
+    progress >
+    .92
+  ) {
+
+    const a =
+      constellationNodes[
+        constellationNodes.length - 1
+      ];
+
+    const b =
+      constellationNodes[0];
+
+
+    constellation.globalAlpha =
+      (
+        progress -
+        .92
+      ) /
+      .08 *
+      .22;
+
+
+    constellation.beginPath();
+
+    constellation.moveTo(
+      a.x,
+      a.y
+    );
+
+    constellation.lineTo(
+      b.x,
+      b.y
+    );
+
+    constellation.stroke();
+
+  }
+
+
+  /* Nodes */
+
+  for (
+    let i = 0;
+    i <
+    constellationNodes.length;
+    i++
+  ) {
+
+    const node =
+      constellationNodes[i];
+
+
+    const alpha =
+      clamp(
+        progress *
+        constellationNodes.length -
+        i,
+        0,
+        1
+      );
+
+
+    constellation.globalAlpha =
+      alpha;
+
+
+    constellation.fillStyle =
+      "#ffe0ec";
+
+
+    constellation.shadowColor =
+      "#ff438f";
+
+
+    constellation.shadowBlur =
+      9;
+
+
+    constellation.beginPath();
+
+    constellation.arc(
+      node.x,
+      node.y,
+      1.3 +
+      Math.sin(
+        t * .003 +
+        node.phase
+      ) *
+      .35,
+      0,
+      Math.PI * 2
+    );
+
+    constellation.fill();
+
+  }
+
+
+  constellation.restore();
+
+}
+
+
+/* =========================================================
+   DRAW HEART
+========================================================= */
+
+function drawHeart(t) {
+
+  heart.clearRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  const progress =
+    easeOutExpo(
+      clamp(
+        (
+          t -
+          CONFIG.heartStart
+        ) /
+        CONFIG.heartDuration,
+        0,
+        1
+      )
+    );
+
+
+  const beat =
+    progress >= 1
+      ? 1 +
+        Math.sin(
+          t * .006
+        ) *
+        .046
+      : 1;
+
+
+  const attractX =
+    pointer.x *
+    W;
+
+
+  const attractY =
+    pointer.y *
+    H;
+
+
+  heart.save();
+
+  heart.globalCompositeOperation =
+    "lighter";
+
+
+  for (
+    const p of heartParticles
+  ) {
+
+    let x;
+    let y;
+
+
+    if (
+      t <
+      CONFIG.heartStart
+    ) {
+
+      x =
+        p.x +
+        Math.sin(
+          t * .0007 +
+          p.phase
+        ) *
+        2.5;
+
+
+      y =
+        p.y +
+        Math.cos(
+          t * .00065 +
+          p.phase
+        ) *
+        2.5;
+
+    } else {
+
+      x =
+        lerp(
+          p.x,
+          p.tx,
+          progress
+        );
+
+
+      y =
+        lerp(
+          p.y,
+          p.ty,
+          progress
+        );
+
+
+      /* pointer interaction */
+
+      if (
+        pointer.active
+      ) {
+
+        const dx =
+          x -
+          attractX;
+
+        const dy =
+          y -
+          attractY;
+
+        const dist2 =
+          dx * dx +
+          dy * dy;
+
+        const radius =
+          110;
+
+        if (
+          dist2 <
+          radius * radius
+        ) {
+
+          const dist =
+            Math.sqrt(
+              dist2
+            ) || 1;
+
+          const force =
+            (
+              1 -
+              dist /
+              radius
+            ) *
+            .9;
+
+
+          p.vx +=
+            (
+              dx /
+              dist
+            ) *
+            force;
+
+
+          p.vy +=
+            (
+              dy /
+              dist
+            ) *
+            force;
+
+        }
+
+      }
+
+
+      p.vx *=
+        .84;
+
+      p.vy *=
+        .84;
+
+
+      x +=
+        p.vx;
+
+      y +=
+        p.vy;
+
+
+      if (
+        progress >= 1
+      ) {
+
+        x =
+          W / 2 +
+          (
+            x -
+            W / 2
+          ) *
+          beat;
+
+
+        y =
+          H * .455 +
+          (
+            y -
+            H * .455
+          ) *
+          beat;
+
+
+        x +=
+          Math.sin(
+            t * .002 +
+            p.phase
+          ) *
+          .35;
+
+
+        y +=
+          Math.cos(
+            t * .0021 +
+            p.phase
+          ) *
+          .35;
+
+      }
+
+    }
+
+
+    const sparkle =
+      .68 +
+      Math.sin(
+        t * .0028 +
+        p.phase
+      ) *
+      .32;
+
+
+    heart.globalAlpha =
+      p.alpha *
+      sparkle *
+      (
+        .03 +
+        progress *
+        .97
+      );
+
+
+    heart.fillStyle =
+      "#ff5ba6";
+
+
+    heart.beginPath();
+
+    heart.arc(
+      x,
+      y,
+      p.size,
+      0,
+      Math.PI * 2
+    );
+
+    heart.fill();
+
+  }
+
+
+  heart.restore();
+
+
+  /* aura */
+
+  if (
+    progress >
+    0
+  ) {
+
+    const pulse =
+      .5 +
+      Math.sin(
+        t * .003
+      ) *
+      .5;
+
+
+    const radius =
+      48 +
+      progress *
+      Math.min(
+        W,
+        H
+      ) *
+      .19;
+
+
+    const aura =
+      heart.createRadialGradient(
+        W / 2,
+        H * .455,
+        0,
+        W / 2,
+        H * .455,
+        radius
+      );
+
+
+    aura.addColorStop(
+      0,
+      `rgba(255,35,140,${
+        .07 +
+        pulse * .025
+      })`
+    );
+
+
+    aura.addColorStop(
+      1,
+      "rgba(255,35,140,0)"
+    );
+
+
+    heart.fillStyle =
+      aura;
+
+
+    heart.beginPath();
+
+    heart.arc(
+      W / 2,
+      H * .455,
+      radius,
+      0,
+      Math.PI * 2
+    );
+
+    heart.fill();
+
+  }
+
+
+  /* completion */
+
+  if (
+    progress >= 1 &&
+    !completionDone
+  ) {
+
+    completionDone =
+      true;
+
+
+    flash.classList.remove(
+      "fire"
+    );
+
+
+    void flash.offsetWidth;
+
+
+    flash.classList.add(
+      "fire"
+    );
+
+
+    createBurst(
+      W / 2,
+      H * .455,
+      1.75
+    );
+
+
+    createRipple(
+      W / 2,
+      H * .455,
+      2.1
+    );
+
+
+    playTone(
+      392,
+      .34,
+      .075
+    );
+
+
+    setTimeout(
+      () => {
+
+        playTone(
+          523.25,
+          .55,
+          .08
+        );
+
+      },
+      110
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   BURST
+========================================================= */
+
+function createBurst(
+  x,
+  y,
+  power = 1
+) {
+
+  for (
+    let i = 0;
+    i <
+    CONFIG.burstParticles;
+    i++
+  ) {
+
+    const angle =
+      Math.random() *
+      Math.PI *
+      2;
+
+
+    const speed =
+      rand(
+        1.2,
+        6.2
+      ) *
+      power;
+
+
+    bursts.push({
+
+      x,
+      y,
+
+      vx:
+        Math.cos(angle) *
+        speed,
+
+      vy:
+        Math.sin(angle) *
+        speed,
+
+      life: 1,
+
+      decay:
+        rand(
+          .012,
+          .028
+        ),
+
+      size:
+        rand(
+          .7,
+          2.7
+        ),
+
+      heart:
+        Math.random() >
+        .76
+
+    });
+
+  }
+
+}
+
+
+/* =========================================================
+   RIPPLE
+========================================================= */
+
+function createRipple(
+  x,
+  y,
+  strength = 1
+) {
+
+  ripples.push({
+
+    x,
+    y,
+
+    radius: 5,
+
+    maxRadius:
+      rand(
+        90,
+        160
+      ) *
+      strength,
+
+    life: 1,
+
+    speed:
+      rand(
+        2.8,
+        4.2
+      ) *
+      strength
+
+  });
+
+}
+
+
+function drawRipples() {
+
+  for (
+    let i =
+      ripples.length - 1;
+
+    i >= 0;
+
+    i--
+  ) {
+
+    const r =
+      ripples[i];
+
+
+    r.radius +=
+      r.speed;
+
+
+    r.life -=
+      .018;
+
+
+    if (
+      r.life <= 0
+    ) {
+
+      ripples.splice(
+        i,
+        1
+      );
+
+      continue;
+
+    }
+
+
+    fx.globalAlpha =
+      r.life * .42;
+
+
+    fx.strokeStyle =
+      "#ff6eae";
+
+
+    fx.lineWidth =
+      1;
+
+
+    fx.beginPath();
+
+    fx.arc(
+      r.x,
+      r.y,
+      r.radius,
+      0,
+      Math.PI * 2
+    );
+
+    fx.stroke();
+
+
+    if (
+      r.radius <
+      r.maxRadius
+    ) {
+
+      fx.globalAlpha =
+        r.life * .10;
+
+
+      fx.beginPath();
+
+      fx.arc(
+        r.x,
+        r.y,
+        r.radius * .7,
+        0,
+        Math.PI * 2
+      );
+
+      fx.stroke();
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   FLOATING HEARTS
+========================================================= */
+
+function createFloatingHeart(
+  x =
+    rand(
+      0,
+      W
+    )
+) {
+
+  if (
+    floatingHearts.length >=
+    CONFIG.floatingHeartLimit
+  ) {
+
+    return;
+
+  }
+
+
+  floatingHearts.push({
+
+    x,
+
+    y:
+      H + 20,
+
+    vx:
+      rand(
+        -.32,
+        .32
+      ),
+
+    vy:
+      rand(
+        -.8,
+        -1.7
+      ),
+
+    size:
+      rand(
+        5,
+        11
+      ),
+
+    life:
+      rand(
+        .7,
+        1
+      ),
+
+    phase:
+      rand(
+        0,
+        Math.PI * 2
+      )
+
+  });
+
+}
+
+
+/* =========================================================
+   FX
+========================================================= */
+
+function drawFX() {
+
+  fx.clearRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  fx.save();
+
+  fx.globalCompositeOperation =
+    "lighter";
+
+
+  /* bursts */
+
+  for (
+    let i =
+      bursts.length - 1;
+
+    i >= 0;
+
+    i--
+  ) {
+
+    const p =
+      bursts[i];
+
+
+    p.x +=
+      p.vx;
+
+    p.y +=
+      p.vy;
+
+
+    p.vx *=
+      .986;
+
+    p.vy *=
+      .986;
+
+    p.vy +=
+      .018;
+
+
+    p.life -=
+      p.decay;
+
+
+    if (
+      p.life <= 0
+    ) {
+
+      bursts.splice(
+        i,
+        1
+      );
+
+      continue;
+
+    }
+
+
+    fx.globalAlpha =
+      p.life;
+
+
+    fx.fillStyle =
+      "#ff71b0";
+
+
+    fx.shadowColor =
+      "#ff2d80";
+
+    fx.shadowBlur =
+      10;
+
+
+    if (
+      p.heart
+    ) {
+
+      drawMiniHeart(
+        fx,
+        p.x,
+        p.y,
+        p.size * 2.8
+      );
+
+    } else {
+
+      fx.beginPath();
+
+      fx.arc(
+        p.x,
+        p.y,
+        p.size,
+        0,
+        Math.PI * 2
+      );
+
+      fx.fill();
+
+    }
+
+  }
+
+
+  /* floating hearts */
+
+  for (
+    let i =
+      floatingHearts.length - 1;
+
+    i >= 0;
+
+    i--
+  ) {
+
+    const p =
+      floatingHearts[i];
+
+
+    p.y +=
+      p.vy;
+
+
+    p.x +=
+      p.vx +
+      Math.sin(
+        p.y * .012 +
+        p.phase
+      ) *
+      .18;
+
+
+    p.life -=
+      .004;
+
+
+    if (
+      p.life <= 0 ||
+      p.y < -30
+    ) {
+
+      floatingHearts.splice(
+        i,
+        1
+      );
+
+      continue;
+
+    }
+
+
+    fx.globalAlpha =
+      p.life *
+      .52;
+
+
+    fx.fillStyle =
+      "#ff6faa";
+
+
+    drawMiniHeart(
+      fx,
+      p.x,
+      p.y,
+      p.size
+    );
+
+  }
+
+
+  fx.restore();
+
+
+  drawRipples();
+
+}
+
+
+/* =========================================================
+   MINI HEART
+========================================================= */
+
+function drawMiniHeart(
+  ctx,
+  x,
+  y,
+  size
+) {
+
+  const scale =
+    size /
+    16;
+
+
+  ctx.save();
+
+
+  ctx.translate(
+    x,
+    y
+  );
+
+
+  ctx.scale(
+    scale,
+    scale
+  );
+
+
+  ctx.beginPath();
+
+
+  for (
+    let i = 0;
+    i <= 50;
+    i++
+  ) {
+
+    const t =
+      (
+        i /
+        50
+      ) *
+      Math.PI *
+      2;
+
+
+    const p =
+      heartPoint(t);
+
+
+    if (
+      i === 0
+    ) {
+
+      ctx.moveTo(
+        p.x,
+        p.y
+      );
+
+    } else {
+
+      ctx.lineTo(
+        p.x,
+        p.y
+      );
+
+    }
+
+  }
+
+
+  ctx.closePath();
+
+  ctx.fill();
+
+
+  ctx.restore();
+
+}
+
+
+/* =========================================================
+   TYPEWRITER
+========================================================= */
+
+function updateTyping() {
+
+  const t =
+    elapsed();
+
+
+  if (
+    t <
+    CONFIG.typingStart
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    typingDone
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    t -
+    typingLast <
+    34
+  ) {
+
+    return;
+
+  }
+  if (
+    typingIndex >=
+    CONFIG.message.length
+  ) {
+
+    typingDone =
+      true;
+
+
+    replay.classList.add(
+      "visible"
+    );
+
+
+    hint.style.opacity =
+      ".22";
+
+
+    return;
+
+  }
+
+
+  typed.textContent =
+    CONFIG.message.slice(
+      0,
+      typingIndex + 1
+    );
+
+
+  typingIndex++;
+
+  typingLast =
+    t;
+
+
+  if (
+    typingIndex %
+    10 ===
+    0
+  ) {
+
+    playTone(
+      180 +
+      typingIndex * 3,
+      .035,
+      .025
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   TIMELINE
+========================================================= */
+
+function updateTimeline() {
+
+  const t =
+    elapsed();
+
+
+  if (
+    t >=
+    CONFIG.messageStart &&
+    !messageDone
+  ) {
+
+    messageDone =
+      true;
+
+
+    message.classList.add(
+      "show"
+    );
+
+  }
+
+
+  if (
+    t >= 9000
+  ) {
+
+    if (
+      Math.random() <
+      .035
+    ) {
+
+      createFloatingHeart();
+
+    }
+
+  }
+
+
+  if (
+    t >=
+    CONFIG.heartStart
+  ) {
+
+    hint.textContent =
+      "touch the heart";
+
+  }
+
+}
+
+
+/* =========================================================
+   POINTER
+========================================================= */
+
+function setPointer(
+  clientX,
+  clientY
+) {
+
+  pointer.px =
+    pointer.x;
+
+  pointer.py =
+    pointer.y;
+
+
+  pointer.x =
+    clamp(
+      clientX / W,
+      0,
+      1
+    );
+
+
+  pointer.y =
+    clamp(
+      clientY / H,
+      0,
+      1
+    );
+
+
+  pointer.active =
+    true;
+
+}
+
+
+/* =========================================================
+   POINTER DOWN
+========================================================= */
+
+function onPointerDown(
+  event
+) {
+
+  if (
+    !running ||
+    paused
+  ) {
+
+    return;
+
+  }
+
+
+  pointer.down =
+    true;
+
+
+  setPointer(
+    event.clientX,
+    event.clientY
+  );
+
+
+  const x =
+    event.clientX;
+
+  const y =
+    event.clientY;
+
+
+  const dx =
+    x -
+    W / 2;
+
+  const dy =
+    y -
+    H * .455;
+
+
+  const dist =
+    Math.sqrt(
+      dx * dx +
+      dy * dy
+    );
+
+
+  if (
+    dist <
+    115
+  ) {
+
+    createBurst(
+      x,
+      y,
+      1.8
+    );
+
+
+    createRipple(
+      x,
+      y,
+      1.3
+    );
+
+
+    playTone(
+      523.25,
+      .16,
+      .055
+    );
+
+  } else {
+
+    createBurst(
+      x,
+      y,
+      .85
+    );
+
+
+    createRipple(
+      x,
+      y,
+      .8
+    );
+
+    createFloatingHeart(
+      x
+    );
+
+
+    playTone(
+      rand(
+        300,
+        460
+      ),
+      .10,
+      .035
+    );
+
+  }
+
+
+  lastPointerTap(
+    performance.now()
+  );
+
+}
+
+
+/* =========================================================
+   TAP DETECTION
+========================================================= */
+
+let previousTap =
+  0;
+
+
+function lastPointerTap(
+  now
+) {
+
+  if (
+    now -
+    previousTap <
+    330
+  ) {
+
+    const x =
+      pointer.x *
+      W;
+
+    const y =
+      pointer.y *
+      H;
+
+
+    createBurst(
+      x,
+      y,
+      2.2
+    );
+
+
+    createRipple(
+      x,
+      y,
+      2.2
+    );
+
+
+    createFloatingHeart(
+      x
+    );
+
+
+    playTone(
+      659.25,
+      .52,
+      .075
+    );
+
+  }
+
+
+  previousTap =
+    now;
+
+}
+
+
+/* =========================================================
+   POINTER MOVE
+========================================================= */
+
+function onPointerMove(
+  event
+) {
+
+  if (
+    !running ||
+    paused
+  ) {
+
+    return;
+
+  }
+
+
+  setPointer(
+    event.clientX,
+    event.clientY
+  );
+
+
+  if (
+    pointer.down
+  ) {
+
+    createBurst(
+      event.clientX,
+      event.clientY,
+      .28
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   POINTER UP
+========================================================= */
+
+function onPointerUp() {
+
+  pointer.down =
+    false;
+
+}
+
+
+/* =========================================================
+   POINTER LEAVE
+========================================================= */
+
+function onPointerLeave() {
+
+  pointer.active =
+    false;
+
+  pointer.down =
+    false;
+
+}
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+document.addEventListener(
+  "pointerdown",
+  onPointerDown,
+  {
+    passive: true
+  }
+);
+
+document.addEventListener(
+  "pointermove",
+  onPointerMove,
+  {
+    passive: true
+  }
+);
+
+document.addEventListener(
+  "pointerup",
+  onPointerUp,
+  {
+    passive: true
+  }
+);
+
+document.addEventListener(
+  "pointercancel",
+  onPointerUp,
+  {
+    passive: true
+  }
+);
+
+
+/* =========================================================
+   AUDIO
+========================================================= */
+
+function initAudio() {
+
+  if (
+    audioContext
+  ) {
+
+    return;
+
+  }
+
+
+  const AudioCtx =
+    window.AudioContext ||
+    window.webkitAudioContext;
+
+
+  if (
+    !AudioCtx
+  ) {
+
+    return;
+
+  }
+
+
+  audioContext =
+    new AudioCtx();
+
+
+  masterGain =
+    audioContext.createGain();
+
+
+  masterGain.gain.value =
+    .025;
+
+
+  masterGain.connect(
+    audioContext.destination
+  );
+
+}
+
+
+async function unlockAudio() {
+
+  initAudio();
+
+
+  if (
+    !audioContext
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    audioContext.state ===
+    "suspended"
+  ) {
+
+    await audioContext.resume();
+
+  }
+
+}
+
+
+function playTone(
+  frequency,
+  duration,
+  volume = .08
+) {
+
+  if (
+    !soundEnabled ||
+    !audioContext ||
+    !masterGain
+  ) {
+
+    return;
+
+  }
+
+
+  const oscillator =
+    audioContext.createOscillator();
+
+
+  const gain =
+    audioContext.createGain();
+
+
+  oscillator.type =
+    "sine";
+
+
+  oscillator.frequency.value =
+    frequency;
+
+
+  gain.gain.setValueAtTime(
+    .0001,
+    audioContext.currentTime
+  );
+
+
+  gain.gain.exponentialRampToValueAtTime(
+    volume,
+    audioContext.currentTime +
+    .025
+  );
+
+
+  gain.gain.exponentialRampToValueAtTime(
+    .0001,
+    audioContext.currentTime +
+    duration
+  );
+
+
+  oscillator.connect(
+    gain
+  );
+
+
+  gain.connect(
+    masterGain
+  );
+
+
+  oscillator.start();
+
+
+  oscillator.stop(
+    audioContext.currentTime +
+    duration +
+    .04
+  );
+
+}
+
+
+/* =========================================================
+   SOUND BUTTON
+========================================================= */
+
+soundButton.addEventListener(
+  "click",
+  async event => {
+
+    event.stopPropagation();
+
+
+    await unlockAudio();
+
+
+    if (
+      !audioContext
+    ) {
+
+      return;
+
+    }
+
+
+    soundEnabled =
+      !soundEnabled;
+
+
+    soundButton.classList.toggle(
+      "active",
+      soundEnabled
+    );
+
+
+    soundButton.textContent =
+      soundEnabled
+        ? "Sound ON"
+        : "Sound";
+
+
+    if (
+      soundEnabled
+    ) {
+
+      playTone(
+        261.63,
+        .28,
+        .065
+      );
+
+
+      setTimeout(
+        () => {
+
+          playTone(
+            329.63,
+            .42,
+            .065
+          );
+
+        },
+        100
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   START EXPERIENCE
+========================================================= */
+
+async function startExperience() {
+
+  if (
+    running
+  ) {
+
+    return;
+
+  }
+
+
+  await unlockAudio();
+
+
+  running =
+    true;
+
+  paused =
+    false;
+
+
+  runElapsed =
+    0;
+
+
+  lastTimestamp =
+    performance.now();
+
+
+  completionDone =
+    false;
+
+  messageDone =
+    false;
+
+  typingDone =
+    false;
+
+
+  typingIndex =
+    0;
+
+
+  typingLast =
+    0;
+
+
+  typed.textContent =
+    "";
+
+
+  bursts.length =
+    0;
+
+
+  ripples.length =
+    0;
+
+
+  floatingHearts.length =
+    0;
+
+
+  opening.classList.add(
+    "hidden"
+  );
+
+
+  replay.classList.remove(
+    "visible"
+  );
+
+
+  pausedLabel.classList.remove(
+    "show"
+  );
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetExperience() {
+
+  running =
+    true;
+
+
+  paused =
+    false;
+
+
+  runElapsed =
+    0;
+
+
+  lastTimestamp =
+    performance.now();
+
+
+  completionDone =
+    false;
+
+
+  messageDone =
+    false;
+
+
+  typingDone =
+    false;
+
+
+  typingIndex =
+    0;
+
+
+  typingLast =
+    0;
+
+
+  typed.textContent =
+    "";
+
+
+  bursts.length =
+    0;
+
+  ripples.length =
+    0;
+
+  floatingHearts.length =
+    0;
+
+
+  opening.classList.add(
+    "hidden"
+  );
+
+
+  message.classList.remove(
+    "show"
+  );
+
+
+  replay.classList.remove(
+    "visible"
+  );
+
+
+  pausedLabel.classList.remove(
+    "show"
+  );
+
+
+  createStars();
+
+  createConstellation();
+
+  createHeartParticles();
+
+  createShootingStars();
+
+}
+
+
+replay.addEventListener(
+  "click",
+  event => {
+
+    event.stopPropagation();
+
+    resetExperience();
+
+  }
+);
+
+
+/* =========================================================
+   PAUSE / RESUME
+========================================================= */
+
+function setPaused(
+  value
+) {
+
+  if (
+    !running
+  ) {
+
+    return;
+
+  }
+
+
+  paused =
+    value;
+
+
+  pausedLabel.classList.toggle(
+    "show",
+    paused
+  );
+
+
+  lastTimestamp =
+    performance.now();
+
+}
+
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+
+    setPaused(
+      document.hidden
+    );
+
+  }
+);
+
+
+/* =========================================================
+   RENDER LOOP
+========================================================= */
+
+function render(
+  timestamp
+) {
+
+  frameHandle =
+    requestAnimationFrame(
+      render
+    );
+
+
+  if (
+    !running
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    paused
+  ) {
+
+    lastTimestamp =
+      timestamp;
+
+    return;
+
+  }
+
+
+  const delta =
+    Math.min(
+      timestamp -
+      lastTimestamp,
+      40
+    );
+
+
+  lastTimestamp =
+    timestamp;
+
+
+  runElapsed +=
+    delta;
+
+
+  const t =
+    elapsed();
+
+
+  drawSpace(t);
+
+  drawConstellation(t);
+
+  drawHeart(t);
+
+  drawFX();
+
+  updateTimeline();
+
+  updateTyping();
+
+}
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+function initialize() {
+
+  messageTitle.textContent =
+    CONFIG.title;
+
+
+  resize();
+
+
+  opening.classList.add(
+    "ready"
+  );
+
+
+  requestAnimationFrame(
+    render
+  );
+
+}
+
+
+/* =========================================================
+   ENTER
+========================================================= */
+
+enter.addEventListener(
+  "click",
+  event => {
+
+    event.stopPropagation();
+
+    startExperience();
+
+  }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+initialize();
+
+</script>
+
+</body>
+</html>
